@@ -1,14 +1,9 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
-const { baseUrl, frontendUrl, mongoUrl, dbName } = process.env;
-
 const config = {
-  baseUrl,
-  frontendUrl,
+  baseUrl: 'http://localhost:5005',
+  frontendUrl: 'http://localhost:3000',
   mongo: {
-    url: mongoUrl,
-    dbName,
+    url: 'mongodb://localhost:27017',
+    dbName: 'DBName',
   },
 };
 

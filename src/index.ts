@@ -1,11 +1,11 @@
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import { easyResponse } from './middlewares/easyResponse.middleware';
 import registeredRouters from './routes/register-routing-files';
 
-dotenv.config();
-const port = process.env.PORT || 5000;
+import { makeDatabaseOperation } from './utils/utils.db';
+
+const port = 5000;
 const app = express();
 
 app.use(easyResponse);
@@ -34,6 +34,13 @@ app.use((req, res, next) => {
   // Pass to next layer of middleware
   next();
 });
+
+const collectionName = 'DBS';
+const operationWithDb = async (collection) => {
+  await collection.insertOne({ a: 4 });
+};
+
+makeDatabaseOperation(operationWithDb, collectionName);
 
 // define a route handler for the default home page
 app.use('/', registeredRouters);

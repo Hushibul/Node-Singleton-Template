@@ -1,31 +1,20 @@
 import { MongoClient } from 'mongodb';
 import config from '../config';
 
-export const createConnection = async () => {
-  try {
-    const dbConnection = await new MongoClient(config.mongo.url).connect();
-    console.log(dbConnection);
-    return dbConnection;
-  } catch (err) {
-    throw new Error('Error in DB connection ' + err);
-  }
-};
+export const makeDatabaseOperation = async (operation, collectionName) => {
+  const client = new MongoClient(config.mongo.url);
 
-export const connectToCollection = async (dbConnection, collectionName) => {
   try {
-    const db = dbConnection.db(config.mongo.dbName);
-    const dbCollection = db.collection(collectionName);
+    await client.connect();
+    console.log('Connected to the db successfully');
+    const db = client.db(config.mongo.dbName);
 
-    return dbCollection;
+    const collection = db.collection(collectionName);
+
+    await operation(collection);
   } catch (err) {
     throw new Error(err);
-  }
-};
-
-export const closeConnection = async (dbConnection) => {
-  try {
-    await dbConnection.close();
-  } catch (err) {
-    throw new Error('Error in Closing DB connection ' + err);
+  } finally {
+    await client.close();
   }
 };
