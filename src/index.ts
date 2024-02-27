@@ -1,6 +1,5 @@
 import cors from 'cors';
 import express from 'express';
-import { easyResponse } from './middlewares/easyResponse.middleware';
 import registeredRouters from './routes/register-routing-files';
 
 import { makeDatabaseOperation } from './utils/utils.db';
@@ -8,7 +7,6 @@ import { makeDatabaseOperation } from './utils/utils.db';
 const port = 5000;
 const app = express();
 
-app.use(easyResponse);
 app.use(express.json()); // support json encoded bodies
 app.use(express.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors());
