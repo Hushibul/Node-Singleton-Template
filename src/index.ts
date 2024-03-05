@@ -2,10 +2,13 @@ import cors from 'cors';
 import express from 'express';
 import registeredRouters from './routes/register-routing-files';
 
+import { ErrorHandler } from './middlewares/errorHandler';
 import { makeDatabaseOperation } from './utils/utils.db';
 
 const port = 5000;
 const app = express();
+
+const errorHandler = ErrorHandler.getInstance();
 
 app.use(express.json()); // support json encoded bodies
 app.use(express.urlencoded({ extended: true })); // support encoded bodies
@@ -42,6 +45,8 @@ makeDatabaseOperation(operationWithDb, collectionName);
 
 // define a route handler for the default home page
 app.use('/', registeredRouters);
+
+app.use(errorHandler.handleError);
 
 // start the Express server
 app.listen(port, () => {
