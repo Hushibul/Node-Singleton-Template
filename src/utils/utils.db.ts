@@ -11,7 +11,7 @@ export const makeDatabaseOperation = async (operation, collectionName) => {
 
     const collection = db.collection(collectionName);
 
-    await operation(collection);
+    return await operation(collection);
   } catch (err) {
     throw new Error(err);
   } finally {
